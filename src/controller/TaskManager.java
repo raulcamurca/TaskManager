@@ -1,6 +1,8 @@
 package controller;
 import java.util.ArrayList;
 import model.Tarefa;
+import model.TarefaPrioritaria;
+import exceptions.TarefaException;
 
 public class TaskManager {
     private ArrayList<Tarefa> tarefas;
@@ -9,9 +11,22 @@ public class TaskManager {
         tarefas = new ArrayList<>();
     }
 
-    public void adicionarTarefa(Tarefa tarefa) {
-        tarefas.add(tarefa);
+    public void adicionarTarefa(Tarefa tarefa) throws TarefaException {
+        // verifica se ja existe uma tarefa com o id digitado pelo usuário e impede adição
+        for (Tarefa t : tarefas) {
+            if (t.getId() == tarefa.getId()) {
+                throw new TarefaException("Erro: já existe uma tarefa com este id, escolha outro.");
+            }
+        }
 
+        if (tarefa instanceof TarefaPrioritaria) {
+            TarefaPrioritaria tp = (TarefaPrioritaria) tarefa;
+            if (tp.getPrioridade() == null || tp.getPrioridade().trim().isEmpty()) {
+                throw new TarefaException("Erro: Uma tarefa prioritária precisa do nível de prioridade.");
+            }
+        }
+
+        tarefas.add(tarefa);
         System.out.println("Tarefa adicionada com sucesso.");
     }
 
@@ -23,18 +38,43 @@ public class TaskManager {
         }
 
         for (Tarefa tarefa : tarefas) {
-            System.out.println(tarefa); // colocar um \n talvez
+            System.out.println(tarefa);
         }
     }
 
-    // public void removerTarefa(Tarefa tarefa) {
-    //     if (!tarefas.isEmpty()) {
-    //         System.out.println("Nenhuma tarefa para remover.");
+    public void concluirTarefa(int id) {
+        boolean encontrada = false;
 
-    //         return;
-    //     }
-    //     tarefas.remove(tarefa);
+        for (Tarefa tarefa : tarefas) {
+            if (tarefa.getId() == id) {
+                tarefa.setConcluida(true);
+                encontrada = true;
+                System.out.println("Tarefa concluída com sucesso.");
+                break;
+            }
+        }
 
-    //     System.out.println("Tarefa removida com sucesso.");
-    // }
+        if (!encontrada) {
+            System.out.println("Nenhuma tarefa com este id foi encontrada.");
+        }
+
+    }
+
+    public void removerTarefa(int id) {
+        Tarefa tarefaRemover = null;
+
+        for (Tarefa tarefa : tarefas) {
+            if (tarefa.getId() == id) {
+                tarefaRemover = tarefa;
+                break;
+            } 
+        }
+
+        if (tarefaRemover != null) { 
+            tarefas.remove(tarefaRemover);
+            System.out.println("Tarefa removida com sucesso.");
+        } else {
+            System.out.println("Tarefa não encontrada.");
+        }
+    }
 }

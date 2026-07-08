@@ -50,12 +50,10 @@ public class Tarefa {
         String status;
 
         if (concluida) {
-            status = "Concluida";
+            status = "Concluída";
         } else {
             status = "Pendente";
         }
-        return "ID" + id + "Título: " + titulo + "Descrição: " + descricao + "Status: " + status;
+        return "\nID " + id + "\nTítulo: " + titulo + "\nDescrição: " + descricao + "\nStatus: " + status;
     }
 }
-
-

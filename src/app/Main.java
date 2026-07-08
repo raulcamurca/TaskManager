@@ -1,6 +1,9 @@
 package app;
 import controller.TaskManager;
+import exceptions.TarefaException;
 import model.Tarefa;
+import model.TarefaPrioritaria;
+
 import java.util.Scanner;
 
 public class Main {
@@ -33,10 +36,27 @@ public class Main {
 
                     System.out.println("Digite a descrição da tarefa: ");
                     String descricao = leitor.nextLine();
+
+                    System.out.println("É uma tarefa prioritária? (S/N): ");
+                    String prioritaria = leitor.nextLine();
                     
-                    Tarefa tarefa = new Tarefa(id, titulo, descricao);
-                    
-                    manager.adicionarTarefa(tarefa);
+                    Tarefa novaTarefa;
+
+                    if (prioritaria.equalsIgnoreCase("S")) {
+                        System.out.println("Digite a prioridade (Alta, Média ou Baixa): ");
+                        String prioridade = leitor.nextLine();
+                        novaTarefa = new TarefaPrioritaria(id, titulo, descricao, prioridade);
+                    } else {
+                        novaTarefa = new Tarefa(id, titulo, descricao);
+                    }
+
+                    try {
+                        manager.adicionarTarefa(novaTarefa);
+                        System.out.println("Operação finalizada com sucesso.");
+                    } catch (TarefaException e) {
+                        System.out.println(e.getMessage());
+                        
+                    }
                     break;
                 case 2:
                     manager.listarTarefas();
