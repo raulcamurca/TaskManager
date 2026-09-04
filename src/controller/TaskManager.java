@@ -1,14 +1,19 @@
 package controller;
+
 import java.util.ArrayList;
 import model.Tarefa;
 import model.TarefaPrioritaria;
+import repository.TarefaRepository;
 import exceptions.TarefaException;
+import java.sql.SQLException;
 
 public class TaskManager<T extends Tarefa> {
     private ArrayList<T> tarefas;
+    private TarefaRepository repository;
 
     public TaskManager() {
         tarefas = new ArrayList<>();
+        repository = new TarefaRepository();
     }
 
     public void adicionarTarefa(T tarefa) throws TarefaException {
@@ -26,8 +31,15 @@ public class TaskManager<T extends Tarefa> {
             }
         }
 
-        tarefas.add(tarefa);
-        System.out.println("Tarefa adicionada com sucesso.");
+        // TODO: TESTAR ISSO
+        try {
+            repository.salvar(tarefa);
+            tarefas.add(tarefa);
+            System.out.println("Tarefa adicionada com sucesso");
+        } catch (SQLException erro) {
+            System.out.println("Erro ao salvar a tarefa no DB");
+            erro.printStackTrace();
+        }
     }
 
     public void listarTarefas() {

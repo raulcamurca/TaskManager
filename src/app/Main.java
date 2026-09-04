@@ -57,7 +57,7 @@ public class Main {
 
                     try {
                         manager.adicionarTarefa(novaTarefa);
-                        System.out.println("Operação finalizada com sucesso.");
+                        // System.out.println("Operação finalizada com sucesso.");
                     } catch (TarefaException e) {
                         System.out.println(e.getMessage());
                         
