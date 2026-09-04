@@ -4,16 +4,16 @@ import model.Tarefa;
 import model.TarefaPrioritaria;
 import exceptions.TarefaException;
 
-public class TaskManager {
-    private ArrayList<Tarefa> tarefas;
+public class TaskManager<T extends Tarefa> {
+    private ArrayList<T> tarefas;
 
     public TaskManager() {
         tarefas = new ArrayList<>();
     }
 
-    public void adicionarTarefa(Tarefa tarefa) throws TarefaException {
+    public void adicionarTarefa(T tarefa) throws TarefaException {
         // verifica se ja existe uma tarefa com o id digitado pelo usuário e impede adição
-        for (Tarefa t : tarefas) {
+        for (T t : tarefas) {
             if (t.getId() == tarefa.getId()) {
                 throw new TarefaException("Erro: já existe uma tarefa com este id, escolha outro.");
             }
@@ -37,7 +37,7 @@ public class TaskManager {
             return;
         }
 
-        for (Tarefa tarefa : tarefas) {
+        for (T tarefa : tarefas) {
             System.out.println(tarefa);
         }
     }
@@ -45,7 +45,7 @@ public class TaskManager {
     public void concluirTarefa(int id) {
         boolean encontrada = false;
 
-        for (Tarefa tarefa : tarefas) {
+        for (T tarefa : tarefas) {
             if (tarefa.getId() == id) {
                 tarefa.setConcluida(true);
                 encontrada = true;
@@ -61,9 +61,9 @@ public class TaskManager {
     }
 
     public void removerTarefa(int id) {
-        Tarefa tarefaRemover = null;
+        T tarefaRemover = null;
 
-        for (Tarefa tarefa : tarefas) {
+        for (T tarefa : tarefas) {
             if (tarefa.getId() == id) {
                 tarefaRemover = tarefa;
                 break;
