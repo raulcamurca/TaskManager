@@ -8,33 +8,16 @@ import exceptions.TarefaException;
 import java.sql.SQLException;
 
 public class TaskManager<T extends Tarefa> {
-    private ArrayList<T> tarefas;
+    // private ArrayList<T> tarefas;
     private TarefaRepository repository;
 
     public TaskManager() {
-        tarefas = new ArrayList<>();
         repository = new TarefaRepository();
     }
 
     public void adicionarTarefa(T tarefa) throws TarefaException {
-        // verifica se ja existe uma tarefa com o id digitado pelo usuário e impede adição
-        for (T t : tarefas) {
-            if (t.getId() == tarefa.getId()) {
-                throw new TarefaException("Erro: já existe uma tarefa com este id, escolha outro.");
-            }
-        }
-
-        if (tarefa instanceof TarefaPrioritaria) {
-            TarefaPrioritaria tp = (TarefaPrioritaria) tarefa;
-            if (tp.getPrioridade() == null || tp.getPrioridade().trim().isEmpty()) {
-                throw new TarefaException("Erro: Uma tarefa prioritária precisa do nível de prioridade.");
-            }
-        }
-
-        // TODO: TESTAR ISSO
         try {
             repository.salvar(tarefa);
-            tarefas.add(tarefa);
             System.out.println("Tarefa adicionada com sucesso");
         } catch (SQLException erro) {
             System.out.println("Erro ao salvar a tarefa no DB");
@@ -43,50 +26,69 @@ public class TaskManager<T extends Tarefa> {
     }
 
     public void listarTarefas() {
-        if (tarefas.isEmpty()) {
+        try {
+            ArrayList<Tarefa> tarefas = repository.listar();
+
+            if (tarefas.isEmpty()) {
             System.out.println("Nenhuma tarefa cadastrada.");
 
-            return;
+        } else {
+            for (Tarefa tarefa : tarefas) {
+                System.out.println(tarefa);
+                System.out.println("=======================");
+            }
         }
 
-        for (T tarefa : tarefas) {
-            System.out.println(tarefa);
+        } catch (SQLException erro) {
+            System.out.println("Erro ao listar tarefas");
+            erro.printStackTrace();
         }
     }
 
     public void concluirTarefa(int id) {
-        boolean encontrada = false;
-
-        for (T tarefa : tarefas) {
-            if (tarefa.getId() == id) {
-                tarefa.setConcluida(true);
-                encontrada = true;
-                System.out.println("Tarefa concluída com sucesso.");
-                break;
+        try {
+           ArrayList<Tarefa> tarefas = repository.listar(); 
+            for (Tarefa tarefa : tarefas) {
+                if (tarefa.getId() == id) {
+                    tarefa.setConcluida(true);
+                    repository.atualizar(tarefa);
+                    System.out.println("Tarefa concluída com sucesso.");
+                    return;
             }
         }
-
-        if (!encontrada) {
-            System.out.println("Nenhuma tarefa com este id foi encontrada.");
+        } catch (SQLException erro) {
+            System.out.println("Erro ao concluir tarefa");
+            erro.printStackTrace();
         }
-
     }
 
+    // TODO: EDITAR TAREFA
+
+
     public void removerTarefa(int id) {
-        T tarefaRemover = null;
+        try {
+            ArrayList<Tarefa> tarefas = repository.listar();
 
-        for (T tarefa : tarefas) {
-            if (tarefa.getId() == id) {
-                tarefaRemover = tarefa;
-                break;
-            } 
-        }
+            Tarefa tarefaRemover = null;
 
-        if (tarefaRemover != null) { 
-            tarefas.remove(tarefaRemover);
-            System.out.println("Tarefa removida com sucesso.");
-        } else {
-            System.out.println("Tarefa não encontrada.");
+            for (Tarefa tarefa : tarefas) {
+                if (tarefa.getId() == id) {
+                    tarefaRemover = tarefa;
+                    break;
+                } 
+            }
+
+            if (tarefaRemover != null) { 
+                repository.excluir(tarefaRemover.getId());
+                System.out.println("Tarefa removida com sucesso.");
+                System.out.println("=======================");
+            } else {
+                System.out.println("Tarefa não encontrada.");
+            }
+
+        } catch (Exception erro) {
+            System.out.println("Erro ao remover a tarefa.");
+            erro.printStackTrace();
         }
     }
 }
