@@ -8,7 +8,7 @@ import exceptions.TarefaException;
 import java.sql.SQLException;
 
 public class TaskManager<T extends Tarefa> {
-    // private ArrayList<T> tarefas;
+    
     private TarefaRepository repository;
 
     public TaskManager() {
@@ -62,7 +62,25 @@ public class TaskManager<T extends Tarefa> {
         }
     }
 
-    // TODO: EDITAR TAREFA
+    public void editarTarefa (int id, String titulo, String descricao) {
+        try {
+            ArrayList<Tarefa> tarefas = repository.listar();
+
+            for (Tarefa tarefa : tarefas) {
+                if (tarefa.getId() == id) {
+                    tarefa.setId(id);
+                    tarefa.setTitulo(titulo);
+                    tarefa.setDescricao(descricao);
+                    repository.atualizar(tarefa);
+                    System.out.println("Tarefa atualizada com sucesso");
+                    break;
+                }
+            }
+        } catch (SQLException erro) {
+            System.out.println("Erro ao atualizar tarefa");
+            erro.printStackTrace();
+        }
+    }
 
 
     public void removerTarefa(int id) {
