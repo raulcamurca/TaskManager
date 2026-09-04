@@ -54,6 +54,9 @@ public class Tarefa {
         } else {
             status = "Pendente";
         }
-        return "\nID " + id + "\nTítulo: " + titulo + "\nDescrição: " + descricao + "\nStatus: " + status;
+        return "\nID: " + id + 
+        "\nTítulo: " + titulo + 
+        "\nDescrição: " + descricao + 
+        "\nStatus: " + status;
     }
 }
