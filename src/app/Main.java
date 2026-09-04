@@ -1,13 +1,18 @@
 package app;
+
 import controller.TaskManager;
 import exceptions.TarefaException;
 import model.Tarefa;
 import model.TarefaPrioritaria;
-
 import java.util.Scanner;
+import database.DatabaseInitializer;
+import java.util.InputMismatchException;
+
 
 public class Main {
     public static void main (String[] args) {
+        DatabaseInitializer.inicializar();
+
         TaskManager<Tarefa> manager = new TaskManager<>();
         Scanner leitor = new Scanner(System.in);
 
