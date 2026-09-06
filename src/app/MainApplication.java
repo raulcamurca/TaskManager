@@ -16,7 +16,7 @@ public class MainApplication extends Application {
 
         Scene scene = new Scene(loader.load());
 
-        stage.setTitle(STYLESHEET_CASPIAN);
+        stage.setTitle("Task Manager");
         stage.setScene(scene);
         stage.setMinWidth(0);
         stage.setMinHeight(0);

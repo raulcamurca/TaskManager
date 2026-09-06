@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.TarefaException;
+
 public class Tarefa {
     private int id;
     private String titulo;
@@ -11,6 +13,12 @@ public class Tarefa {
         this.titulo = titulo;
         this.descricao = descricao;
         this.concluida = false;
+    }
+
+    public void validar() throws TarefaException {
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new TarefaException("O título da tarefa é obrigatório");
+        }
     }
 
     public int getId() {
