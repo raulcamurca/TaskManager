@@ -11,4 +11,8 @@ public class Conexao {
         return DriverManager.getConnection(URL);
     }
 
+    public static Connection conectarTeste() throws SQLException {
+        return DriverManager.getConnection("jdbc:sqlite::memory:");
+    }
+
 }
