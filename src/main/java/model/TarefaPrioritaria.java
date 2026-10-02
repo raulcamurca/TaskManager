@@ -3,6 +3,7 @@ package model;
 public class TarefaPrioritaria extends Tarefa {
     private String prioridade;
 
+    // TODO: implementar com a interface
     public TarefaPrioritaria (
         int id,
         String titulo,

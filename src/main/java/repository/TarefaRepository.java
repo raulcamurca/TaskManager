@@ -17,7 +17,6 @@ public class TarefaRepository {
         try {
             this.conexao = Conexao.conectar();
         } catch (SQLException erro) {
-            // TODO: handle exception
             throw new RuntimeException(
                 "Erro ao conectar ao DB",
                 erro
@@ -46,7 +45,6 @@ public class TarefaRepository {
                 """;
         }
 
-        // verificar
         try (PreparedStatement comando = autoIncrement
                 ? conexao.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)
                 : conexao.prepareStatement(sql)) {
@@ -75,7 +73,6 @@ public class TarefaRepository {
         
     }
 
-    // verificar
     public ArrayList<Tarefa> listar() throws SQLException {
 
         ArrayList<Tarefa> tarefas = new ArrayList<>();
@@ -91,17 +88,11 @@ public class TarefaRepository {
             while (resultado.next()) {
 
                 int id = resultado.getInt("id");
-
                 String titulo = resultado.getString("titulo");
-
                 String descricao = resultado.getString("descricao");
-
                 boolean concluida = resultado.getBoolean("concluida");
-
                 Tarefa tarefa = new Tarefa (id, titulo, descricao);
-
                 tarefa.setConcluida(concluida);
-
                 tarefas.add(tarefa);
             }
         }
@@ -121,13 +112,9 @@ public class TarefaRepository {
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)) {
             comando.setString(1, tarefa.getTitulo());
-
             comando.setString(2, tarefa.getDescricao());
-
             comando.setInt(3, tarefa.isConcluida() ? 1 : 0);
-
             comando.setInt(4, tarefa.getId());
-
             comando.executeUpdate();
         }
     }

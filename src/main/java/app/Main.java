@@ -6,8 +6,6 @@ import model.Tarefa;
 import model.TarefaPrioritaria;
 import java.util.Scanner;
 import database.DatabaseInitializer;
-import java.util.InputMismatchException;
-
 
 public class Main {
     public static void main (String[] args) {

@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 import model.Tarefa;
-import model.TarefaPrioritaria;
 import repository.TarefaRepository;
 import exceptions.TarefaException;
 import java.sql.SQLException;

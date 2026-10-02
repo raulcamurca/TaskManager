@@ -57,11 +57,17 @@
 
     <build>
         <plugins>
+            <!-- Plugin de Compilação -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
             </plugin>
+
+            <!-- Plugin JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -69,6 +75,20 @@
                 <configuration>
                     <mainClass>app.Launcher</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>jlink</id>
+                        <goals>
+                            <goal>jlink</goal>
+                        </goals>
+                        <configuration>
+                            <launcher>TaskManager</launcher>
+                            <jlinkImageName>TaskManagerApp</jlinkImageName>
+                            <noHeaderFiles>true</noHeaderFiles>
+                            <noManPages>true</noManPages>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
